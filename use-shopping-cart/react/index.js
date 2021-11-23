@@ -19,6 +19,15 @@ export function CartProvider({ loading = null, children, ...props }) {
   const store = React.useMemo(() => createShoppingCartStore(props), [props])
   const persistor = persistStore(store)
 
+  if (typeof window === "undefined") {
+    return (
+      <Provider context={CartContext} store={store}>
+        {children}
+      </Provider>
+    )
+  }
+
+
   return (
     <Provider context={CartContext} store={store}>
       <PersistGate
