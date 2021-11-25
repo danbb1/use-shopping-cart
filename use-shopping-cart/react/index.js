@@ -5,6 +5,7 @@ import {
   formatCurrencyString,
   filterCart
 } from '../core/index'
+import { isClient } from '../utilities/SSR'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import { createDispatchHook, createSelectorHook, Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -19,7 +20,7 @@ export function CartProvider({ loading = null, children, ...props }) {
   const store = React.useMemo(() => createShoppingCartStore(props), [props])
   const persistor = persistStore(store)
 
-  if (typeof window === "undefined") {
+  if (!isClient) {
     return (
       <Provider context={CartContext} store={store}>
         {children}
